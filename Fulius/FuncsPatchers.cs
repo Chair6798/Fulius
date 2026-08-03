@@ -59,7 +59,7 @@ namespace Fulius.Patchers.FuncsPatch
                 stream.SendNext(new Vector3(0, 2000, 0));
                 stream.SendNext(false);
 
-                stream.SendNext(Reflection.GetValue(__instance, "playerPing"));
+                stream.SendNext((int)Reflection.GetValue(__instance, "playerPing"));
                 return false;
             }
             return true;

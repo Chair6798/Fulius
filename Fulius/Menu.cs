@@ -90,6 +90,8 @@ namespace Fulius
                     i++;
                     BoolOption(i, k, "Invisibility", ref Funcs.Yourself.Invisibility);
                     i++;
+                    BoolOption(i, k, "Noclip", ref Funcs.Yourself.Noclip);
+                    i++;
                     break;
 
             }
