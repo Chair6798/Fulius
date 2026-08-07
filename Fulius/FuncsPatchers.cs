@@ -25,6 +25,23 @@ namespace Fulius.Patchers.FuncsPatch
             return true;
         }
     }
+    [HarmonyPatch(typeof(PlayerTumble))]
+    internal static class PlayerTumblePatch
+    {
+        [HarmonyPatch("TumbleRequest")]
+        [HarmonyPrefix]
+        private static bool Tumble_Prefix(PlayerTumble __instance, bool _isTumbling, bool _playerInput)
+        {
+            if (PlayersLib.IsLocal(__instance))
+            {
+                if(_isTumbling&&!_playerInput)
+                {
+                    return !(Funcs.Yourself.NoTumble||Funcs.Yourself.Noclip);
+                }
+            }
+            return true;
+        }
+    }
     [HarmonyPatch(typeof(PlayerAvatar))]
     internal static class PlayerAvatarPatch
     {

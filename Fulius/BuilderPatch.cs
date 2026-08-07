@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Fulius.Noclip;
 using HarmonyLib;
 using UnityEngine;
 namespace Fulius.Patchers
@@ -25,6 +26,7 @@ namespace Fulius.Patchers
             GameObject.DontDestroyOnLoad(go);
             go.AddComponent<Menu>();
             go.AddComponent<Controller>();
+            go.AddComponent<NoclipController>();
         }
     }
 }

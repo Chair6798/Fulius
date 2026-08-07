@@ -63,6 +63,9 @@ namespace Fulius
                 SideButton(i, "Yourself", sideScrollMenuRect);
                 i++;
 
+                SideButton(i, "Teleport", sideScrollMenuRect);
+                i++;
+
                 SideButton(i, "Valuables", sideScrollMenuRect);
                 i++;
 
@@ -75,13 +78,14 @@ namespace Fulius
                 GUI.EndScrollView();
             }
             mainMenuScroll = GUI.BeginScrollView(new Rect(windowRect.position + new Vector2(windowRect.width / 3,0), new Vector2(windowRect.width/3*2, windowRect.height)), mainMenuScroll, new Rect(0, 0, windowRect.width, windowRect.height));
+            int i = 0;
+            int k = 0;
             switch (currentMenu)
             {
                 default:
                     break;
                 case "Yourself":
-                    int i = 0;
-                    int k = 0;
+                    
                     BoolOption(i,k, "No damage", ref Funcs.Yourself.NoDamage);
                     i++;
                     BoolOption(i, k, "No client death", ref Funcs.Yourself.NoClientDeath);
@@ -92,8 +96,16 @@ namespace Fulius
                     i++;
                     BoolOption(i, k, "Noclip", ref Funcs.Yourself.Noclip);
                     i++;
+                    BoolOption(i, k, "No tumble", ref Funcs.Yourself.NoTumble);
+                    i++;
                     break;
+                case "Teleport":
+                    if(Button(i,k,"Truck"))
+                    {
 
+                    }
+                    i++;
+                    break;
             }
             GUI.EndScrollView();
         }
@@ -120,6 +132,17 @@ namespace Fulius
                 onToggle?.Invoke(val);
             }
             GUI.Label(rect, $"{GraphicsGenerator.Texter.PaintString(text, val?"green":"red")}({GetBoolMark(val)})", SideBarButtonText);
+        }
+        static bool Button(int i, int k, string text, Action act=null)
+        {
+            Rect rect = new Rect(5 + k * (size.x / 3 + 5), 5 + i * (30 + 5), size.x / 3, 30);
+            bool b = GUI.Button(rect, "", GraphicsGenerator.Styler.Rect(new Color(0.1f, 0.1f, 0.1f)));
+            if (b)
+            {
+                act?.Invoke();
+            }
+            GUI.Label(rect, text, SideBarButtonText);
+            return b;
         }
         void Update()
         {

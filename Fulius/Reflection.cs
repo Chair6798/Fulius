@@ -22,7 +22,7 @@ namespace Fulius.Libs
                 }
                 else
                 {
-                    field = type.GetField(name);
+                    field = type.GetField(name, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
                     fields.Add(name, field);
                     return field;
                 }
@@ -31,7 +31,7 @@ namespace Fulius.Libs
             {
                 fields = new Dictionary<string, FieldInfo>();
                 reflectedfields.Add(type, fields);
-                FieldInfo field = type.GetField(name);
+                FieldInfo field = type.GetField(name, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
                 fields.Add(name, field);
                 return field;
             }

@@ -16,6 +16,7 @@ namespace Fulius
             internal static bool InfinityGrabRange = false;
             internal static bool Noclip = false;
             internal static bool Invisibility = false;
+            internal static bool NoTumble = false;
         }
     }
 }
