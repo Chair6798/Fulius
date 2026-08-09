@@ -56,7 +56,7 @@ namespace Fulius
             cameraUp = Config.Bind<KeyCode>("Camera", "Up", KeyCode.Space);
             cameraDown = Config.Bind<KeyCode>("Camera", "Down", KeyCode.LeftControl);
             cameraFaster = Config.Bind<KeyCode>("Camera", "Faster", KeyCode.LeftShift);
-            cameraSpeed = Config.Bind<float>("Camera", "Speed", 10f);
+            cameraSpeed = Config.Bind<float>("Camera", "Speed", 5f);
         }
     }
 }
