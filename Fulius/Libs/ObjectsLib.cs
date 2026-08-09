@@ -10,7 +10,7 @@ namespace Fulius.Libs
     internal static class Objects
     {
 
-        internal static bool GetObject(string type, ref object obj)
+        internal static bool GetObject(string type, ref GameObject obj)
         {
             switch(type)
             {
@@ -19,7 +19,7 @@ namespace Fulius.Libs
                     {
                         return false;
                     }
-                    obj = TruckSafetySpawnPoint.instance;
+                    obj = TruckSafetySpawnPoint.instance.gameObject;
                     return true;
                 case "extraction":
                     if(RoundDirector.instance== null)
@@ -45,7 +45,14 @@ namespace Fulius.Libs
                             break;
                         }
                     }
-                    return true;
+                    if(current==null)
+                    {
+                        return false;
+                    }else
+                    {
+                        obj = current.gameObject;
+                        return true;
+                    }
             }
             return false;
         }

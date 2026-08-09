@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Fulius.Controllers;
 using Fulius.Noclip;
 using HarmonyLib;
 using UnityEngine;
@@ -27,6 +28,11 @@ namespace Fulius.Patchers
             go.AddComponent<Menu>();
             go.AddComponent<Controller>();
             go.AddComponent<NoclipController>();
+            go.AddComponent<LocalPlayerController>();
+            go.AddComponent<GameCameraController>();
+            go.AddComponent<FreeCameraController>();
+            go.AddComponent<BindController>();
+            go.AddComponent<ActiveFunctions>();
         }
     }
 }

@@ -12,6 +12,9 @@ namespace Fulius
     internal static class Config
     {
         internal static ConfigEntry<KeyCode> menuKey;
+        internal static ConfigEntry<KeyCode> rebindKey;
+        internal static ConfigEntry<KeyCode> bindCancelKey;
+        internal static ConfigEntry<KeyCode> bindEraseKey;
         //noclip binds
         internal static ConfigEntry<KeyCode> noclipForward;
         internal static ConfigEntry<KeyCode> noclipBackward;
@@ -25,6 +28,9 @@ namespace Fulius
         internal static void Init(ConfigFile Config)
         {
             menuKey = Config.Bind<KeyCode>("Menu", "Toggle", KeyCode.F1);
+            rebindKey = Config.Bind<KeyCode>("Menu", "Rebind", KeyCode.LeftControl);
+            bindCancelKey = Config.Bind<KeyCode>("Menu", "Cancel", KeyCode.Escape);
+            bindEraseKey = Config.Bind<KeyCode>("Menu", "Erase", KeyCode.Backspace);
             // noclip binds
             noclipForward = Config.Bind<KeyCode>("Noclip", "Forward", KeyCode.W);
             noclipBackward = Config.Bind<KeyCode>("Noclip", "Backward", KeyCode.S);

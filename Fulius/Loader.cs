@@ -13,6 +13,7 @@ namespace Fulius
             patch = new Harmony(Data.GUID);
             patch.PatchAll();
             Fulius.Config.Init(Config);
+            Binds.OnLoad();
         }
     }
     internal static class Data

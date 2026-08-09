@@ -24,7 +24,6 @@ namespace Fulius
                     PlayerController.instance.EnergyCurrent = PlayerController.instance.EnergyStart;
                 }
             }
-            
         }
     }
 }

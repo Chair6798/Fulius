@@ -18,5 +18,9 @@ namespace Fulius
             internal static bool Invisibility = false;
             internal static bool NoTumble = false;
         }
+        internal static class World
+        {
+            internal static bool FreeCamera = false;
+        }
     }
 }

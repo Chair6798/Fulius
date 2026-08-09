@@ -41,6 +41,35 @@ namespace Fulius.Patchers.FuncsPatch
             }
             return true;
         }
+        [HarmonyPatch("TumbleSet")]
+        [HarmonyPrefix]
+        private static bool TumbleSet_Prefix(PlayerTumble __instance, bool _isTumbling, bool _playerInput)
+        {
+            if (PlayersLib.IsLocal(__instance))
+            {
+                if (_isTumbling && !_playerInput)
+                {
+                    return !(Funcs.Yourself.NoTumble || Funcs.Yourself.Noclip);
+                }
+            }
+            return true;
+        }
+        [HarmonyPatch("TumbleSetRPC")]
+        [HarmonyPostfix]
+        private static void TumbleSetRPC_Postfix(PlayerTumble __instance, bool _isTumbling, bool _playerInput)
+        {
+            if (PlayersLib.IsLocal(__instance))
+            {
+                if (_isTumbling && !_playerInput)
+                {
+                    if (Funcs.Yourself.NoTumble || Funcs.Yourself.Noclip)
+                    {
+                        __instance.TumbleSet(false, false);
+                    }
+                }
+            }
+        }
+
     }
     [HarmonyPatch(typeof(PlayerAvatar))]
     internal static class PlayerAvatarPatch
