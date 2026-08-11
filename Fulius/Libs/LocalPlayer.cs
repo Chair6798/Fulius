@@ -17,6 +17,7 @@ namespace Fulius.Libs
             {
                 c.rb.position = position;
             }
+            
         }
         internal static bool ControllerObjectActive()
         {

@@ -35,8 +35,8 @@ namespace Fulius
             //rotation
             float x = Input.GetAxis("Mouse X");
             float y = Input.GetAxis("Mouse Y");
-            rotY += x * Config.cameraSpeed.Value;
-            rotX -= y * Config.cameraSpeed.Value;
+            rotY += x * Config.cameraSens.Value;
+            rotX -= y * Config.cameraSens.Value;
 
             rotX = math.clamp(rotX, -90f, 90f);
 

@@ -42,9 +42,9 @@ namespace Fulius.Libs
         {
             return GetCameraPositionComponent().gameObject;
         }
-        internal static Vector3 GetPosition()
+        static Vector3 GetPosition()
         {
-            return CameraPositionAvaiable() ? GetCameraPositionObject().transform.position:Vector3.zero;
+            return GetCameraPositionObject().transform.position;
         }
         internal static void SetPosition(Vector3 position)
         {
@@ -81,6 +81,30 @@ namespace Fulius.Libs
                 SetRotation(value);
             }
         }
+
+        internal static Vector3 forward
+        {
+            get
+            {
+                if(!CameraAimAvaiable())
+                {
+                    return Vector3.forward;
+                }
+                return GetCameraAimObject().transform.forward;
+            }
+        }
+        internal static Vector3 right
+        {
+            get
+            {
+                if (!CameraAimAvaiable())
+                {
+                    return Vector3.right;
+                }
+                return GetCameraAimObject().transform.right;
+            }
+        }
+
         internal static bool RotationActive()
         {
             return CameraAim.Instance.enabled;
@@ -120,5 +144,6 @@ namespace Fulius.Libs
         {
             return CameraAim.Instance != null;
         }
+        
     }
 }

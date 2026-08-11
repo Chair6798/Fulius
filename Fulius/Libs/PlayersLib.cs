@@ -53,5 +53,13 @@ namespace Fulius.Libs
             }
             return null;
         }
+        internal static void Teleport(PlayerAvatar avatar, Vector3 position)
+        {
+            if(SemiFunc.IsMasterClientOrSingleplayer())
+            {
+                avatar.Spawn(position, Quaternion.identity);
+            }
+            
+        }
     }
 }

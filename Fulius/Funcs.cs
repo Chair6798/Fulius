@@ -21,6 +21,15 @@ namespace Fulius
         internal static class World
         {
             internal static bool FreeCamera = false;
+            internal static bool Fullbright = false;
+        }
+        internal static class Esp
+        {
+            internal static bool Valuables = false;
+            internal static bool Enemies = false;
+            internal static bool Items = false;
+            internal static bool Cosmetics = false;
+            internal static bool Players = false;
         }
     }
 }

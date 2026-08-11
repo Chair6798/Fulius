@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 using Fulius.Libs;
+using Photon.Pun;
+using Fulius.Components;
 namespace Fulius
 {
     internal class Menu : MonoBehaviour
@@ -83,9 +85,12 @@ namespace Fulius
                 SideButton(i, "Cosmetic", sideScrollMenuRect);
                 i++;
 
+                SideButton(i, "Fake", sideScrollMenuRect);
+                i++;
+
                 GUI.EndScrollView();
             }
-            mainMenuScroll = GUI.BeginScrollView(new Rect(windowRect.position + new Vector2(windowRect.width / 3,0), new Vector2(windowRect.width/3*2, windowRect.height)), mainMenuScroll, new Rect(0, 0, windowRect.width, windowRect.height));
+            
             i = 0;
             int k = 0;
             switch (currentMenu)
@@ -93,7 +98,7 @@ namespace Fulius
                 default:
                     break;
                 case "Yourself":
-                    
+                    StartScroll(windowRect, 5 + 35 * 5);
                     BoolOption(i,k, "No damage", ref Funcs.Yourself.NoDamage, bind:Binds.GetBindInfo("Yourself", "NoDamage"));
                     i++;
                     BoolOption(i, k, "No client death", ref Funcs.Yourself.NoClientDeath, bind:Binds.GetBindInfo("Yourself", "NoClientDeath"));
@@ -106,20 +111,46 @@ namespace Fulius
                     i++;
                     BoolOption(i, k, "No tumble", ref Funcs.Yourself.NoTumble, bind:Binds.GetBindInfo("Yourself", "NoTumble"));
                     i++;
+                    EndScroll();
                     break;
                 case "World":
+                    StartScroll(windowRect, 5 + 35 * 2);
                     BoolOption(i, k, "Free camera", ref Funcs.World.FreeCamera, bind:Binds.GetBindInfo("World", "FreeCamera"));
                     i++;
+                    BoolOption(i, k, "Fullbright", ref Funcs.World.Fullbright, bind: Binds.GetBindInfo("World", "Fullbright"));
+                    i++;
+                    EndScroll();
                     break;
                 case "Teleport":
+                    StartScroll(windowRect, 5+35 * 2);
                     TeleportButton(i, k, "Truck", "truck");
                     i++;
                     TeleportButton(i, k, "Extraction point", "extraction");
                     i++;
+                    EndScroll();
+                    break;
+                case "Fake":
+                    StartScroll(windowRect, StatsManager.instance.itemDictionary.Values.Count*35 + 5);
+                    foreach (Item item in StatsManager.instance.itemDictionary.Values)
+                    {
+                        FakeSpawnItem(i, k, item);
+                        i++;
+                    }
+                    EndScroll();
                     break;
             }
             GUI.EndScrollView();
         }
+
+        static void StartScroll(Rect windowRect, int elementsHeight)
+        {
+            mainMenuScroll = GUI.BeginScrollView(new Rect(windowRect.position + new Vector2(windowRect.width / 3, 0), new Vector2(windowRect.width / 3 * 2, windowRect.height)), mainMenuScroll, new Rect(0, 0, windowRect.width / 3 * 2, elementsHeight));
+        }
+        static void EndScroll()
+        {
+            GUI.EndScrollView();
+        }
+
         static void SideButton(int i, string text, Rect menuRect)
         {
             Vector2 buttonSize = new Vector2(menuRect.width-10, 30);
@@ -172,6 +203,20 @@ namespace Fulius
             }
             GUI.Label(rect, text, SideBarButtonText);
             return b;
+        }
+        static void FakeSpawnItem(int i, int k, Item item)
+        {
+            if(Button(i,k, item.itemName))
+            {
+                GameObject fake = UnityEngine.Object.Instantiate(item.prefab.Prefab);
+                fake.GetComponent<PhotonTransformView>().enabled = false;
+                fake.GetComponent<PhotonView>().enabled = false;
+                fake.GetComponent<Rigidbody>().position = GameCamera.position + GameCamera.forward * 2;
+                if(!SemiFunc.IsMasterClientOrSingleplayer())
+                {
+                    fake.AddComponent<Fake>();
+                }
+            }
         }
         static void TeleportButton(int i, int k, string text, string type)
         {

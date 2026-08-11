@@ -33,6 +33,7 @@ namespace Fulius
         internal static ConfigEntry<KeyCode> cameraDown;
         internal static ConfigEntry<KeyCode> cameraFaster;
         internal static ConfigEntry<float> cameraSpeed;
+        internal static ConfigEntry<float> cameraSens;
         internal static void Init(ConfigFile Config)
         {
             menuKey = Config.Bind<KeyCode>("Menu", "Toggle", KeyCode.F1);
@@ -56,7 +57,8 @@ namespace Fulius
             cameraUp = Config.Bind<KeyCode>("Camera", "Up", KeyCode.Space);
             cameraDown = Config.Bind<KeyCode>("Camera", "Down", KeyCode.LeftControl);
             cameraFaster = Config.Bind<KeyCode>("Camera", "Faster", KeyCode.LeftShift);
-            cameraSpeed = Config.Bind<float>("Camera", "Speed", 5f);
+            cameraSpeed = Config.Bind<float>("Camera", "Speed", 1f);
+            cameraSens = Config.Bind<float>("Camera", "Sensivity", 1f);
         }
     }
 }
