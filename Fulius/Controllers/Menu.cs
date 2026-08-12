@@ -141,11 +141,36 @@ namespace Fulius
                     }
                     EndScroll();
                     break;
+                case "Valuables":
+                    StartScroll(windowRect, 5 + 3 * 35);
+                    BoolOption(i, k, "Esp", ref Funcs.Esp.Valuables, bind: Binds.GetBindInfo("Esp", "Enemies"));
+                    i++;
+                    if (Button(i,k,"Break All"))
+                    {
+                        Valuables.BreakAll();
+                    }
+                    i++;
+                    if (Button(i, k, "Teleport All"))
+                    {
+                        Valuables.TeleportAll();
+                    }
+                    i++;
+                    if (Button(i,k, "Extract All"))
+                    {
+                        Valuables.TeleportAllToExtraction();
+                    }
+                    i++;
+                    EndScroll();
+                    break;
                 case "Esp":
-                    StartScroll(windowRect, 5 + 35 * 2);
+                    StartScroll(windowRect, 5 + 35 * 3);
                     BoolOption(i, k, "Players", ref Funcs.Esp.Players, bind: Binds.GetBindInfo("Esp", "Players"));
                     i++;
                     BoolOption(i, k, "Enemies", ref Funcs.Esp.Enemies, bind: Binds.GetBindInfo("Esp", "Enemies"));
+                    i++;
+                    BoolOption(i, k, "Valuables", ref Funcs.Esp.Valuables, bind: Binds.GetBindInfo("Esp", "Enemies"));
+                    i++;
+                    BoolOption(i, k, "Cosmetics", ref Funcs.Esp.Cosmetics, bind: Binds.GetBindInfo("Esp", "Enemies"));
                     i++;
                     EndScroll();
                     break;

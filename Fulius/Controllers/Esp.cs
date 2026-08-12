@@ -18,21 +18,32 @@ namespace Fulius
         static GUIStyle playerTumbleStyle;
         static GUIStyle playerDeadStyle;
         static GUIStyle enemyStyle;
+        static GUIStyle valuableStyle;
+        static GUIStyle cosmeticStyle;
         void Awake()
         {
             baseStyle = new GUIStyle();
             baseStyle.fontSize = 20;
             baseStyle.alignment = TextAnchor.MiddleCenter;
             baseStyle.normal.textColor = Color.white;
+            //
             playerStyle = new GUIStyle(baseStyle);
             playerStyle.normal.textColor = Color.green;
+            //
             playerTumbleStyle = new GUIStyle(baseStyle);
             playerTumbleStyle.normal.textColor = new Color(0.2f, 0.6f, 0.2f);
+            //
             playerDeadStyle = new GUIStyle(baseStyle);
             playerDeadStyle.normal.textColor = new Color(1f,0.5f,0.5f);
+            //
             enemyStyle = new GUIStyle(baseStyle);
             enemyStyle.normal.textColor = Color.red;
-
+            //
+            valuableStyle = new GUIStyle(baseStyle);
+            valuableStyle.normal.textColor = Color.yellow;
+            //
+            cosmeticStyle = new GUIStyle(baseStyle);
+            cosmeticStyle.normal.textColor = Color.cyan;
         }
         void OnGUI()
         {
@@ -49,11 +60,27 @@ namespace Fulius
             }
             if(Funcs.Esp.Enemies)
             {
-                foreach(EnemyParent enemy in UnityEngine.Object.FindObjectsByType<EnemyParent>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+                foreach(EnemyParent enemy in Enemies.GetAll())
                 {
                     GenerateEnemyLabel(enemy);
                 }
             }
+            if(Funcs.Esp.Valuables)
+            {
+                foreach(ValuableObject valuable in Valuables.GetAll())
+                {
+                    GenerateValuableLabel(valuable);
+                }
+            }
+            if (Funcs.Esp.Cosmetics)
+            {
+                foreach (CosmeticWorldObject cosmetic in Cosmetics.GetAll())
+                {
+                    GenerateCosmeticLabel(cosmetic);
+                }
+            }
+            
+
         }
         static void GenerateLabel(Vector3 position, string text, GUIStyle style)
         {
@@ -64,13 +91,25 @@ namespace Fulius
             }
             GUI.Label(MakeRect(pos), text, style);
         }
+        static void GenerateCosmeticLabel(CosmeticWorldObject cosmetic)
+        {
+            string text = (cosmetic.rarity == SemiFunc.Rarity.Common) ? "Common" : (cosmetic.rarity == SemiFunc.Rarity.Uncommon) ? "Uncommon" : (cosmetic.rarity == SemiFunc.Rarity.Rare) ? "Rare" : (cosmetic.rarity == SemiFunc.Rarity.UltraRare) ? "Ultra Rare" : "Unknow rarity";
+            NotValuableObject nvo = (NotValuableObject)Reflection.GetValue(cosmetic, "notValuableObject");
+            GenerateLabel(cosmetic.transform.position, $"{text} \n {(int)Reflection.GetValue(nvo, "healthCurrent")}/{nvo.healthMax}", cosmeticStyle);
+        }
+        static void GenerateValuableLabel(ValuableObject valuable)
+        {
+            GenerateLabel(valuable.transform.position, $"{valuable.name} \n {(int)Reflection.GetValue(valuable, "dollarValueOriginal")}$/{(int)Reflection.GetValue(valuable, "dollarValueCurrent")}%", valuableStyle);
+        }
         static void GenerateEnemyLabel(EnemyParent enemy)
         {
             if (!(bool)Reflection.GetValue(enemy, "Spawned"))
             {
                 return;
             }
-            GenerateLabel(enemy.GetComponentInChildren<Rigidbody>().position+new Vector3(0, 0.5f, 0), enemy.enemyName, enemyStyle);
+            Enemy real = (Enemy)Reflection.GetValue(enemy, "Enemy");
+            EnemyHealth health = (EnemyHealth)Reflection.GetValue(real, "Health");
+            GenerateLabel(enemy.GetComponentInChildren<Rigidbody>().position+new Vector3(0, 0.5f, 0), $"{enemy.enemyName} \n {health.health}/{(int)Reflection.GetValue(health, "healthCurrent")}", enemyStyle);
         }
         static void GeneratePlayerLabel(PlayerAvatar avatar)
         {
@@ -94,7 +133,6 @@ namespace Fulius
                 {
                     position = avatar.transform.position + new Vector3(0, 1, 0);
                 }
-                
             }
             if ((bool)Reflection.GetValue(avatar, "deadSet"))
             {
