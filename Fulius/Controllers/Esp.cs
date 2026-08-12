@@ -15,30 +15,45 @@ namespace Fulius
         public static bool log = false;
         static GUIStyle baseStyle;
         static GUIStyle playerStyle;
+        static GUIStyle playerTumbleStyle;
         static GUIStyle playerDeadStyle;
+        static GUIStyle enemyStyle;
         void Awake()
         {
             baseStyle = new GUIStyle();
             baseStyle.fontSize = 20;
             baseStyle.alignment = TextAnchor.MiddleCenter;
+            baseStyle.normal.textColor = Color.white;
             playerStyle = new GUIStyle(baseStyle);
             playerStyle.normal.textColor = Color.green;
+            playerTumbleStyle = new GUIStyle(baseStyle);
+            playerTumbleStyle.normal.textColor = new Color(0.2f, 0.6f, 0.2f);
             playerDeadStyle = new GUIStyle(baseStyle);
-            playerStyle.normal.textColor = new Color(1f,0.2f,0.2f);
+            playerDeadStyle.normal.textColor = new Color(1f,0.5f,0.5f);
+            enemyStyle = new GUIStyle(baseStyle);
+            enemyStyle.normal.textColor = Color.red;
 
         }
         void OnGUI()
         {
-            foreach (Player p in PhotonNetwork.PlayerList)
+            if(Funcs.Esp.Players&& SemiFunc.IsMultiplayer())
             {
-
-                var avatar = SemiFunc.PlayerAvatarGetFromPhotonPlayer(p);
-                if (avatar != null)
+                foreach (Player p in PhotonNetwork.PlayerList)
                 {
-                    GeneratePlayerLabel(avatar);
+                    var avatar = SemiFunc.PlayerAvatarGetFromPhotonPlayer(p);
+                    if (avatar != null)
+                    {
+                        GeneratePlayerLabel(avatar);
+                    }
                 }
             }
-            
+            if(Funcs.Esp.Enemies)
+            {
+                foreach(EnemyParent enemy in UnityEngine.Object.FindObjectsByType<EnemyParent>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+                {
+                    GenerateEnemyLabel(enemy);
+                }
+            }
         }
         static void GenerateLabel(Vector3 position, string text, GUIStyle style)
         {
@@ -49,6 +64,14 @@ namespace Fulius
             }
             GUI.Label(MakeRect(pos), text, style);
         }
+        static void GenerateEnemyLabel(EnemyParent enemy)
+        {
+            if (!(bool)Reflection.GetValue(enemy, "Spawned"))
+            {
+                return;
+            }
+            GenerateLabel(enemy.GetComponentInChildren<Rigidbody>().position+new Vector3(0, 0.5f, 0), enemy.enemyName, enemyStyle);
+        }
         static void GeneratePlayerLabel(PlayerAvatar avatar)
         {
             Vector3 position;
@@ -57,7 +80,22 @@ namespace Fulius
             {
                 return;
             }
-            position = avatar.transform.position;
+            if ((bool)Reflection.GetValue(avatar, "isCrouching"))
+            {
+                position = avatar.transform.position + new Vector3(0, 0.5f, 0);
+            }
+            else
+            {
+                if ((bool)Reflection.GetValue(avatar, "isCrawling"))
+                {
+                    position = avatar.transform.position + new Vector3(0, 0.2f, 0);
+                }
+                else
+                {
+                    position = avatar.transform.position + new Vector3(0, 1, 0);
+                }
+                
+            }
             if ((bool)Reflection.GetValue(avatar, "deadSet"))
             {
                 state = 2;
@@ -68,7 +106,7 @@ namespace Fulius
                 state = 1;
                 position = ((PlayerTumble)Reflection.GetValue(avatar, "tumble")).transform.position;
             }
-            GenerateLabel(position, avatar.photonView.Owner.NickName, (state == 2) ? playerDeadStyle : playerStyle);
+            GenerateLabel(position, $"{avatar.photonView.Owner.NickName} \n {(int)Reflection.GetValue(avatar.playerHealth,"health")}/{(int)Reflection.GetValue(avatar.playerHealth, "maxHealth")}", (state == 2) ? playerDeadStyle:(state==1) ? playerTumbleStyle : playerStyle);
         }
         static Rect MakeRect(Vector3 pos)
         {

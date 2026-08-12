@@ -56,6 +56,11 @@ namespace Fulius.Controllers
                 GUI.Label(mathPos(i), "Free camera", style);
                 i++;
             }
+            if (Funcs.World.Fullbright)
+            {
+                GUI.Label(mathPos(i), "Fullbright", style);
+                i++;
+            }
         }
         static Rect mathPos(int i)
         {

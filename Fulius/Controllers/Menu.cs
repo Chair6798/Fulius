@@ -88,6 +88,9 @@ namespace Fulius
                 SideButton(i, "Fake", sideScrollMenuRect);
                 i++;
 
+                SideButton(i, "Esp", sideScrollMenuRect);
+                i++;
+
                 GUI.EndScrollView();
             }
             
@@ -136,6 +139,14 @@ namespace Fulius
                         FakeSpawnItem(i, k, item);
                         i++;
                     }
+                    EndScroll();
+                    break;
+                case "Esp":
+                    StartScroll(windowRect, 5 + 35 * 2);
+                    BoolOption(i, k, "Players", ref Funcs.Esp.Players, bind: Binds.GetBindInfo("Esp", "Players"));
+                    i++;
+                    BoolOption(i, k, "Enemies", ref Funcs.Esp.Enemies, bind: Binds.GetBindInfo("Esp", "Enemies"));
+                    i++;
                     EndScroll();
                     break;
             }

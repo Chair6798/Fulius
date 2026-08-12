@@ -33,6 +33,7 @@ namespace Fulius.Patchers
             go.AddComponent<FreeCameraController>();
             go.AddComponent<BindController>();
             go.AddComponent<ActiveFunctions>();
+            go.AddComponent<Esp>();
         }
     }
 }
