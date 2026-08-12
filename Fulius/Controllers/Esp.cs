@@ -99,7 +99,7 @@ namespace Fulius
         }
         static void GenerateValuableLabel(ValuableObject valuable)
         {
-            GenerateLabel(valuable.transform.position, $"{valuable.name} \n {(int)Reflection.GetValue(valuable, "dollarValueOriginal")}$/{(int)Reflection.GetValue(valuable, "dollarValueCurrent")}%", valuableStyle);
+            GenerateLabel(valuable.transform.position, $"{valuable.name} \n {(float)Reflection.GetValue(valuable, "dollarValueOriginal")}$/{(float)Reflection.GetValue(valuable, "dollarValueCurrent")}%", valuableStyle);
         }
         static void GenerateEnemyLabel(EnemyParent enemy)
         {
